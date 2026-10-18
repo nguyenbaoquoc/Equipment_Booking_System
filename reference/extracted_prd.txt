@@ -1,0 +1,397 @@
+LAB EQUIPMENT BOOKING SYSTEM
+PRODUCT REQUIREMENTS DOCUMENT  |  BASELINE v1.0
+Thuộc tính
+Nội dung
+Loại tài liệu
+Đặc tả yêu cầu sản phẩm (PRD) / đầu bài thực tập
+Bên yêu cầu
+ML&IoT Lab – đơn vị quản lý thiết bị
+Người sử dụng
+Thành viên Lab; người quản lý thiết bị
+Thời lượng thực hiện
+06 tuần tính từ khi bắt đầu dự án
+Tình trạng
+Baseline để giao bài; các giả định cần người giao bài xác nhận
+Quyền lựa chọn kỹ thuật
+Do người thực hiện đề xuất và chịu trách nhiệm giải thích
+Nguyên tắc của tài liệu: quy định hệ thống cần làm gì, hành vi thế nào và nghiệm thu ra sao; không chỉ định ngôn ngữ, công nghệ, công cụ, cách lưu trữ hay cấu trúc kiến trúc.
+1. Tóm tắt sản phẩm
+Lab có nhiều thiết bị dùng chung như máy trạm, camera hoặc bộ kit thực nghiệm. Việc trao đổi lịch qua tin nhắn hay bảng tính có thể dẫn đến đặt trùng, khó theo dõi lịch sử và thiếu đầu mối quản lý. Sản phẩm cung cấp một nơi tập trung để tra cứu, đặt và quản lý lịch sử dụng từng thiết bị.
+1.1. Mục tiêu nghiệp vụ
+Thành viên dễ dàng biết thiết bị nào có thể đặt trong một khoảng thời gian cụ thể.
+Một thiết bị không thể có hai lượt đặt đã xác nhận bị chồng lấn thời gian.
+Người đặt tự quản lý lịch của mình; người phụ trách có thể quản lý danh mục và xử lý trường hợp đặc biệt.
+Dữ liệu lịch sử đặt và hủy được lưu lại để đối chiếu khi cần.
+1.2. Kết quả mong đợi
+Đến cuối tuần 6, người kiểm thử có thể sử dụng một phiên bản hoạt động của sản phẩm, thực hiện trọn vẹn các hành trình đặt lịch / hủy lịch / quản trị thiết bị, kiểm tra các tình huống lỗi và nhận đủ tài liệu bàn giao.
+2. Phạm vi và giả định
+2.1. Trong phạm vi – MVP (P0)
+Đăng nhập bằng tài khoản đã được cấp và phân quyền Thành viên / Quản lý thiết bị.
+Xem, tìm kiếm, lọc thiết bị; xem chi tiết và các khoảng thời gian đã được đặt.
+Tạo lượt đặt mới với khoảng thời gian, mục đích sử dụng và phản hồi kết quả rõ ràng.
+Tự xem và hủy lượt đặt tương lai của mình; xem lịch sử.
+Quản lý thiết bị: thêm mới, sửa thông tin, tạm ngừng nhận đặt mới.
+Quản lý xem tất cả lượt đặt và có quyền hủy lượt đặt trong tương lai với lý do.
+Kiểm tra và ngăn chặn đặt trùng, bao gồm hai yêu cầu đồng thời.
+2.2. Ngoài phạm vi
+Không yêu cầu: đăng ký tài khoản công khai; phê duyệt đặt lịch; đặt lặp theo tuần; danh sách chờ; thu phí; gửi email / SMS / thông báo thời gian thực; check-in/check-out thiết bị; đa chi nhánh; phân bổ theo số lượng thiết bị; báo cáo phân tích nâng cao; tích hợp AI; ứng dụng di động riêng; tính năng trao đổi hoặc chat.
+2.3. Giả định nghiệp vụ được dùng để chốt đề bài
+Mã
+Giả định / chính sách
+Giải thích
+A-01
+Một thiết bị trong danh mục là một tài sản vật lý riêng, công suất đặt = 1.
+Không quản lý số lượng tồn kho.
+A-02
+Tất cả lịch hiển thị theo giờ địa phương của Lab tại Việt Nam.
+Không xử lý nhiều múi giờ cho người dùng.
+A-03
+Lượt đặt được xác nhận ngay khi hợp lệ, không qua bước duyệt.
+Giữ luồng nghiệp vụ ngắn.
+A-04
+Mỗi lượt đặt tối đa 4 giờ, bắt đầu trong 14 ngày tới.
+Các giới hạn có thể đổi khi người giao bài duyệt.
+A-05
+Tài khoản và vai trò có sẵn khi bắt đầu kiểm thử.
+Không cần chức năng quản lý tài khoản.
+A-06
+Người dùng không chỉnh sửa thời gian lịch đã xác nhận.
+Muốn đổi giờ phải hủy và đặt lại.
+3. Stakeholders và quyền truy cập
+Vai trò
+Nhu cầu chính
+Quyền
+Thành viên Lab (Member)
+Tìm thiết bị, đặt và hủy lịch của bản thân.
+Xem danh mục, khoảng thời gian bận; xem toàn bộ chi tiết lịch của chính mình; đặt/hủy lịch của mình.
+Quản lý thiết bị (Manager)
+Đảm bảo danh mục và lịch vận hành đúng.
+Toàn bộ quyền của thành viên; thêm/sửa/ngưng nhận đặt; xem mọi lượt đặt; hủy lịch tương lai và ghi lý do.
+Người giao bài / nghiệm thu
+Kiểm chứng sản phẩm đáp ứng yêu cầu.
+Sử dụng các tài khoản kiểm thử để đánh giá; không phải một role nghiệp vụ riêng.
+Quy tắc hiển thị: Thành viên được xem thời gian bận của thiết bị nhưng không xem thông tin nhận dạng hay mục đích đặt của thành viên khác. Quản lý được xem đầy đủ để điều phối.
+4. User stories và mức ưu tiên
+ID
+User story
+Ưu tiên
+Điều kiện thỏa mãn (tóm tắt)
+US-01
+Là người dùng, tôi muốn đăng nhập để sử dụng đúng quyền được cấp.
+P0
+Người chưa đăng nhập không thể thao tác cần quyền.
+US-02
+Là thành viên, tôi muốn tìm và xem chi tiết thiết bị.
+P0
+Xem mã, tên, vị trí, trạng thái; tìm theo tên/mã.
+US-03
+Là thành viên, tôi muốn thấy các khung giờ bận của thiết bị.
+P0
+Không tiết lộ người đặt khác; thể hiện rõ ngày/giờ.
+US-04
+Là thành viên, tôi muốn tạo lịch hợp lệ và nhận xác nhận.
+P0
+Không vượt giới hạn, không đụng lịch hiện có.
+US-05
+Là thành viên, tôi muốn xem và hủy lịch của mình.
+P0
+Lịch hủy không còn khóa giờ, lịch sử vẫn hiện.
+US-06
+Là quản lý, tôi muốn tạo/sửa và ngưng nhận đặt thiết bị.
+P0
+Thông tin được lưu và trạng thái có hiệu lực.
+US-07
+Là quản lý, tôi muốn xem/hủy lịch của thành viên khi cần.
+P0
+Lý do hủy được ghi nhận và người dùng thấy kết quả.
+US-08
+Là thành viên, tôi muốn lọc thiết bị theo tình trạng.
+P1
+Tùy chọn mở rộng khi P0 hoàn tất.
+P0 = bắt buộc để nghiệm thu; P1 = mở rộng nếu đủ thời gian. Không có P1 nào được làm thay cho P0.
+5. Functional requirements – đặc tả chức năng
+5.1. Truy cập và tài khoản
+ID
+Yêu cầu
+Ưu tiên
+FR-01
+Cho phép người dùng có tài khoản hợp lệ đăng nhập và đăng xuất.
+P0
+FR-02
+Mọi hành động cần quyền phải kiểm tra danh tính và vai trò; từ chối người không có quyền.
+P0
+5.2. Danh mục và lịch thiết bị
+ID
+Yêu cầu
+Ưu tiên
+FR-03
+Hiển thị danh sách thiết bị: mã, tên, vị trí, mô tả ngắn và trạng thái nhận đặt.
+P0
+FR-04
+Tìm thiết bị theo tên hoặc mã; xem chi tiết một thiết bị.
+P0
+FR-05
+Xem các khoảng thời gian đã được xác nhận theo thiết bị và ngày; không lộ thông tin riêng của người đặt khác.
+P0
+FR-06
+Cho phép xem / lọc nhanh các thiết bị đang nhận đặt.
+P1
+5.3. Tạo và quản lý lượt đặt
+ID
+Yêu cầu
+Ưu tiên
+FR-07
+Thành viên chọn thiết bị, thời gian bắt đầu/kết thúc và nhập mục đích sử dụng để gửi yêu cầu đặt.
+P0
+FR-08
+Kiểm tra thời gian hợp lệ, giới hạn đặt trước, thời lượng tối đa và trạng thái nhận đặt của thiết bị.
+P0
+FR-09
+Từ chối yêu cầu nếu chồng lấn lượt đặt đang được xác nhận; hai yêu cầu đồng thời không được cùng thành công cho một khung giờ xung đột.
+P0
+FR-10
+Với yêu cầu hợp lệ, xác nhận lượt đặt ngay và trả về mã lượt đặt, thiết bị, khoảng thời gian và trạng thái.
+P0
+FR-11
+Thành viên xem danh sách lượt đặt của bản thân và chi tiết từng lượt, gồm cả các lượt đã hủy.
+P0
+FR-12
+Thành viên được hủy lượt đặt tương lai của chính mình; giờ đó trở lại có thể đặt.
+P0
+FR-13
+Lịch đã hủy vẫn tồn tại trong lịch sử; người dùng không thể hủy lại hoặc thay đổi thông tin lịch đã hủy.
+P0
+5.4. Quản lý vận hành
+ID
+Yêu cầu
+Ưu tiên
+FR-14
+Quản lý tạo mới thiết bị với mã duy nhất và thông tin tối thiểu bắt buộc.
+P0
+FR-15
+Quản lý cập nhật thông tin thiết bị (ngoại trừ mã định danh đã cấp).
+P0
+FR-16
+Quản lý đánh dấu thiết bị tạm ngừng / khôi phục nhận đặt mới; lịch xác nhận cũ không bị tự động hủy.
+P0
+FR-17
+Quản lý xem danh sách và chi tiết mọi lượt đặt; lọc theo thiết bị hoặc trạng thái.
+P0
+FR-18
+Quản lý hủy lượt đặt tương lai của thành viên khác, bắt buộc ghi lý do; thành viên thấy lịch bị hủy khi xem lịch sử.
+P0
+5.5. Phản hồi và kiểm soát lỗi
+ID
+Yêu cầu
+Ưu tiên
+FR-19
+Mỗi thao tác thành công/thất bại phải có phản hồi hiểu được; lỗi nhập liệu chỉ rõ trường cần sửa.
+P0
+FR-20
+Nếu lượt đặt bị từ chối do trùng lịch, hiển thị thông báo xung đột và cho phép chọn khoảng khác; không tạo lịch nửa chừng.
+P0
+6. Business rules – quy tắc nghiệp vụ
+ID
+Quy tắc có hiệu lực
+BR-01
+Khoảng đặt được hiểu là [bắt đầu, kết thúc). Hai lượt chỉ tiếp giáp tại thời điểm kết thúc/bắt đầu được phép cùng tồn tại.
+BR-02
+Hai lượt xung đột nếu bắt đầu A < kết thúc B VÀ bắt đầu B < kết thúc A, khi cùng thiết bị và cả hai đang được xác nhận.
+BR-03
+Thời gian bắt đầu phải ở tương lai; thời gian kết thúc lớn hơn thời gian bắt đầu.
+BR-04
+Thời lượng một lượt > 0 và ≤ 4 giờ; thời gian bắt đầu không quá 14 ngày tính từ thời điểm đặt.
+BR-05
+Chỉ thiết bị đang ở trạng thái nhận đặt mới có thể tạo booking mới.
+BR-06
+Đặt hợp lệ được xác nhận ngay; không tồn tại trạng thái chờ duyệt.
+BR-07
+Thành viên chỉ hủy lịch của mình và chỉ khi thời gian bắt đầu còn ở tương lai.
+BR-08
+Quản lý có thể hủy lượt đặt tương lai của bất kỳ thành viên nào; phải nhập lý do.
+BR-09
+Lượt đặt đã hủy không ngăn lượt đặt mới và không bị xóa khỏi lịch sử.
+BR-10
+Không sửa thời gian lượt đặt đã xác nhận; người đặt hủy rồi tạo lượt mới.
+BR-11
+Thiết bị ngừng nhận đặt mới không làm thay đổi trạng thái các lượt đã xác nhận. Quản lý chịu trách nhiệm xem và xử lý những lượt chịu ảnh hưởng.
+BR-12
+Mã thiết bị không trùng; thiết bị có lịch sử không được xóa vĩnh viễn qua giao diện.
+BR-13
+Tài khoản Thành viên chỉ thấy chi tiết lịch của bản thân; lịch bận của người khác chỉ hiển thị khoảng thời gian.
+BR-14
+Lượt đặt đã kết thúc vẫn được giữ trong lịch sử; trạng thái “đã qua” là thông tin hiển thị, không phải hành động nghiệp vụ mới.
+7. Use cases – luồng nghiệp vụ
+UC-01. Tra cứu và xem lịch thiết bị
+Actor: Thành viên hoặc Quản lý. Tiền điều kiện: đã đăng nhập. Luồng chính: (1) mở danh mục, (2) tìm thiết bị, (3) xem chi tiết, (4) chọn ngày, (5) xem các khoảng đang bận. Kết quả: người dùng biết thiết bị có nhận đặt và những khung giờ đã được sử dụng. Ngoại lệ: không có thiết bị khớp thì hiển thị trạng thái rỗng.
+UC-02. Đặt lịch sử dụng
+Actor: Thành viên. Tiền điều kiện: đã đăng nhập, thiết bị đang nhận đặt. Luồng chính: (1) chọn thiết bị, (2) nhập khoảng giờ và mục đích, (3) gửi yêu cầu, (4) hệ thống kiểm tra tính hợp lệ và xung đột, (5) xác nhận và cung cấp mã đặt. Ngoại lệ: dữ liệu sai / quá hạn / thiết bị ngừng đặt / trùng lịch -> từ chối, giải thích lý do, không ghi lượt đặt mới. Hậu điều kiện thành công: có chính xác một lượt xác nhận mới, khoảng giờ tương ứng bị đánh dấu bận.
+UC-03. Hủy lịch của bản thân
+Actor: Thành viên. Tiền điều kiện: lượt đặt thuộc người dùng, đang xác nhận và chưa bắt đầu. Luồng chính: (1) mở lịch của tôi, (2) chọn lịch, (3) xác nhận hủy, (4) hệ thống ghi nhận hủy, (5) lịch giữ trong lịch sử và khoảng giờ được giải phóng. Ngoại lệ: không phải chủ sở hữu, lịch đã bắt đầu hoặc đã hủy -> từ chối phù hợp.
+UC-04. Quản lý tình trạng thiết bị
+Actor: Quản lý. Tiền điều kiện: có quyền quản lý. Luồng chính: (1) chọn thiết bị, (2) cập nhật thông tin hoặc đổi trạng thái nhận đặt, (3) lưu, (4) hệ thống phản ánh trạng thái mới. Nếu ngừng nhận đặt và còn lịch xác nhận tương lai, hệ thống thông báo có lịch bị ảnh hưởng nhưng không tự động hủy. Ngoại lệ: mã thiết bị trùng hoặc dữ liệu bắt buộc thiếu -> từ chối.
+UC-05. Quản lý hủy lịch thay thành viên
+Actor: Quản lý. Tiền điều kiện: lượt đặt chưa bắt đầu. Luồng chính: (1) tìm lịch, (2) chọn hủy, (3) nhập lý do, (4) xác nhận, (5) cập nhật lịch sử và giải phóng khoảng giờ. Ngoại lệ: lý do trống, lịch đã bắt đầu hoặc đã hủy -> từ chối.
+8. Mô hình thông tin nghiệp vụ
+Đối tượng
+Thuộc tính tối thiểu
+Ràng buộc / ghi chú
+Người dùng
+Mã người dùng, tên hiển thị, thông tin đăng nhập, vai trò
+Vai trò: Member hoặc Manager. Tài khoản được chuẩn bị trước.
+Thiết bị
+Mã thiết bị, tên, vị trí, mô tả, trạng thái nhận đặt
+Mã duy nhất, không đổi sau khi cấp; trạng thái: nhận đặt / ngừng nhận đặt.
+Lượt đặt
+Mã lượt, người tạo, thiết bị, bắt đầu, kết thúc, mục đích, trạng thái, thời điểm tạo
+Trạng thái nghiệp vụ: xác nhận / đã hủy.
+Thông tin hủy
+Thời điểm hủy, người thực hiện, lý do (nếu quản lý hủy)
+Gắn với lượt đặt; lịch sử không bị xóa.
+Yêu cầu thông tin tối thiểu: tên thiết bị 1–100 ký tự; vị trí 1–100 ký tự; mục đích sử dụng 1–200 ký tự. Các giới hạn này là baseline kiểm thử và có thể được duyệt thay đổi trước khi triển khai.
+9. Non-functional requirements
+ID
+Yêu cầu có thể kiểm chứng
+Cách nghiệm thu
+NFR-01
+Dễ sử dụng: người mới có thể hoàn thành luồng tìm -> đặt -> xem lịch mà không cần hướng dẫn trực tiếp.
+Người nghiệm thu thực hiện một hành trình trên giao diện từ mô tả tác vụ.
+NFR-02
+Tương thích: giao diện sử dụng được ở kích thước màn hình máy tính và điện thoại thông thường.
+Thử ít nhất 1 kích thước desktop, 1 mobile; thao tác chính không bị che.
+NFR-03
+Khả năng phản hồi: với dữ liệu mẫu 100 thiết bị và 1.000 lượt đặt, thao tác xem danh sách / lịch / tạo lịch thông thường phản hồi trong 3 giây ở ít nhất 90% của 20 lượt thử trong môi trường đánh giá đã mô tả.
+Ghi điều kiện đo và kết quả; không yêu cầu hạ tầng chuyên dụng.
+NFR-04
+Tính nhất quán: nhiều yêu cầu đặt xung đột cùng lúc không được tạo hai lượt xác nhận chồng lấn.
+Thử ≥ 5 yêu cầu đồng thời vào cùng thiết bị/khung giờ: chỉ 1 được chấp nhận.
+NFR-05
+Bảo mật: dữ liệu và chức năng bị giới hạn đúng theo vai trò, không trả chi tiết lịch người khác cho Member.
+Kiểm thử truy cập trái phép đến lịch riêng và thao tác quản lý.
+NFR-06
+An toàn thông tin: không hiển thị hoặc ghi nhật ký bí mật đăng nhập; thông tin nhạy cảm không lưu trực tiếp trong mã nguồn bàn giao.
+Rà soát ứng dụng, cấu hình bàn giao và thông báo lỗi.
+NFR-07
+Khả năng phục hồi lỗi: lỗi đầu vào hoặc thất bại thao tác không để lại lượt đặt chưa hoàn tất.
+Thử các trường hợp dữ liệu sai, lịch trùng, yêu cầu lặp.
+NFR-08
+Khả năng quan sát: lỗi vận hành quan trọng và thao tác đặt/hủy có thông tin đủ để truy vết mà không làm lộ bí mật.
+Trình bày một ví dụ truy vết lỗi dựa trên nhật ký.
+NFR-09
+Có thể tái hiện: người đánh giá dựng được bản chạy mới theo tài liệu bàn giao với dữ liệu mẫu.
+Reviewer thực hiện các bước cài đặt/chạy và kiểm thử được hướng dẫn.
+NFR-10
+Có thể kiểm thử: các quy tắc xung đột, phân quyền, đặt/hủy và giới hạn thời gian có bài kiểm tra tự động.
+Chạy bộ kiểm thử và xem các trường hợp điển hình.
+10. User acceptance testing (UAT)
+TC
+Tình huống kiểm thử
+Kết quả mong đợi
+AT-01
+Member đăng nhập và xem thiết bị / khung bận của người khác.
+Xem được giờ bận nhưng không thấy tên/mục đích của người đặt khác.
+AT-02
+Đặt thiết bị đang nhận đặt, giờ hợp lệ, không trùng.
+Tạo đúng 1 lượt xác nhận, hiện trong “Lịch của tôi”.
+AT-03
+Đặt giờ trùng một phần hoặc chứa trọn một lượt đã xác nhận.
+Bị từ chối, không có lượt xác nhận mới.
+AT-04
+Đặt 10:00–11:00 khi có lịch 09:00–10:00.
+Thành công vì hai khoảng tiếp giáp.
+AT-05
+Gửi 5 yêu cầu đồng thời cùng thiết bị và khoảng 10:00–11:00.
+Chỉ 1 yêu cầu được xác nhận; các yêu cầu còn lại báo xung đột.
+AT-06
+Đặt trong quá khứ / cuối ≤ đầu / dài hơn 4 giờ / xa hơn 14 ngày.
+Tất cả bị từ chối với phản hồi giải thích được.
+AT-07
+Member hủy lịch tương lai của mình; Member khác đặt lại khoảng vừa hủy.
+Lịch cũ chuyển đã hủy; lịch mới được chấp nhận.
+AT-08
+Member thử hủy lịch người khác hoặc sửa thông tin thiết bị.
+Bị từ chối do không đủ quyền.
+AT-09
+Member hủy lịch đã bắt đầu hoặc hủy lại lịch cũ.
+Bị từ chối; trạng thái lịch không sai lệch.
+AT-10
+Manager ngừng nhận đặt một thiết bị có lịch tương lai.
+Không cho đặt mới; các lượt đã xác nhận vẫn giữ nguyên; có cảnh báo lịch tương lai.
+AT-11
+Manager hủy lịch tương lai của Member với lý do.
+Lịch chuyển đã hủy; có người thực hiện, thời điểm và lý do.
+AT-12
+Manager tạo thiết bị trùng mã; hoặc Member truy cập trang/quyền Manager.
+Không cho tạo mã trùng; các chức năng Manager bị bảo vệ.
+11. Ràng buộc tiến độ và kế hoạch bàn giao
+Tuần
+Mục tiêu nghiệp vụ
+Kết quả kiểm tra
+1
+Hiểu bối cảnh, xác định phạm vi, làm rõ giả định, thiết kế trải nghiệm và dữ liệu nghiệp vụ.
+Chốt đặc tả, các màn hình / hành trình chính và kế hoạch thực hiện.
+2
+Danh mục thiết bị, tài khoản có sẵn, phân quyền và tra cứu lịch.
+Demo UC-01 cùng các quyền cơ bản.
+3
+Luồng tạo đặt lịch và các business rules.
+Demo UC-02, AT-02/03/04/06.
+4
+Hủy lịch, quản trị và xử lý tranh chấp lịch đồng thời.
+Demo UC-03/04/05, AT-05/07/08/10/11.
+5
+Hoàn thiện trải nghiệm, kiểm thử, sửa lỗi và chuẩn bị cách chạy / dữ liệu mẫu.
+Bản nghiệm thu thử; test report theo AT-01..12.
+6
+Ổn định, bàn giao và trình bày quyết định thiết kế.
+Demo end-to-end, kết quả UAT, tài liệu và technical defense.
+Thay đổi phạm vi: mọi yêu cầu mới sau baseline phải được người giao bài đồng ý, đồng thời nêu rõ phần việc nào bị thay thế hoặc mốc thời gian nào cần điều chỉnh. Không bổ sung tính năng mới trong tuần 6 nếu ảnh hưởng tới P0.
+12. Điều kiện nghiệm thu cuối kỳ
+12.1. Definition of Done
+Toàn bộ P0 (US/FR/BR) được triển khai và liên kết tới tình huống kiểm chứng.
+AT-01 đến AT-12 đều đạt; đặc biệt AT-05 về đồng thời và AT-08 về phân quyền.
+Không còn lỗi nghiêm trọng làm sai kết quả đặt/hủy hoặc lộ dữ liệu người dùng.
+Có dữ liệu mẫu, hướng dẫn chạy, cách đăng nhập bằng tài khoản kiểm thử và bộ kiểm tra tự động các quy tắc trọng yếu.
+Có tài liệu mô tả sản phẩm, các giới hạn còn lại và cách người triển khai kiểm chứng hệ thống.
+Có demo trực tiếp và giải thích được cách hệ thống đảm bảo những ràng buộc khó nhất.
+12.2. Nội dung trình bày
+Người thực hiện trình bày: (1) vấn đề và nhu cầu người dùng; (2) phạm vi và luồng sản phẩm; (3) cách giải quyết xung đột lịch và phân quyền; (4) minh chứng kiểm thử; (5) hạn chế, rủi ro và quyết định kỹ thuật đã tự lựa chọn. Bên giao bài đánh giá theo mức đáp ứng yêu cầu, tính chính xác và khả năng giải thích, không dựa trên việc chọn một công nghệ cụ thể.
+13. Ma trận truy vết yêu cầu
+User story
+Functional requirements
+Acceptance tests
+US-01
+FR-01, FR-02
+AT-01, AT-08, AT-12
+US-02, US-03
+FR-03, FR-04, FR-05
+AT-01
+US-04
+FR-07, FR-08, FR-09, FR-10, FR-19, FR-20
+AT-02, AT-03, AT-04, AT-05, AT-06
+US-05
+FR-11, FR-12, FR-13
+AT-07, AT-09
+US-06
+FR-14, FR-15, FR-16
+AT-10, AT-12
+US-07
+FR-17, FR-18
+AT-11
+US-08
+FR-06
+P1 – ngoài cổng nghiệm thu P0
+14. Rủi ro và quyết định còn mở
+Vấn đề
+Hướng xử lý trong baseline
+Giới hạn 4 giờ / 14 ngày có thể khác vận hành Lab thực tế.
+Dùng như chính sách kiểm thử mặc định; người giao bài có thể chốt thay đổi trước tuần 2.
+Thiết bị ngừng hoạt động khi đã có lịch trong tương lai.
+Cảnh báo và yêu cầu Manager hủy thủ công; không tự hủy khi đổi trạng thái.
+Tiến độ 6 tuần hạn chế khả năng mở rộng.
+Chỉ P0 là nghĩa vụ; mọi tính năng ngoài phạm vi cần phê duyệt.
+Người thực hiện có thể ưu tiên UI / AI thay vì correctness.
+UAT và quy tắc nhất quán lịch là cổng nghiệm thu bắt buộc.
+Tài liệu này không phản ánh quy trình thật đã được phê duyệt.
+Chủ đề thực tập mô phỏng; PM/mentor là người chốt nghiệp vụ cuối cùng.
+KẾT THÚC TÀI LIỆU   •   PRD v1.0

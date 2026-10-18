@@ -1,0 +1,60 @@
+# ===============================
+# OS Generated Files
+# ===============================
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ===============================
+# IDE & Editor Files
+# ===============================
+.idea/
+*.iml
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# ===============================
+# Backend (Java / Maven / Gradle)
+# ===============================
+backend/target/
+backend/.mvn/
+backend/mvnw
+backend/mvnw.cmd
+backend/build/
+backend/.gradle/
+*.class
+*.jar
+*.war
+
+# ===============================
+# Frontend (Node / React)
+# ===============================
+frontend/node_modules/
+frontend/build/
+frontend/dist/
+frontend/.next/
+frontend/npm-debug.log*
+frontend/yarn-debug.log*
+frontend/yarn-error.log*
+frontend/.pnpm-debug.log*
+
+# ===============================
+# Environment Variables & Secrets
+# ===============================
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# ===============================
+# Logs & Temp
+# ===============================
+logs/
+*.log
+scratch/
+tmp/
