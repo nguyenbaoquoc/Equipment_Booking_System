@@ -123,20 +123,35 @@ Hệ thống tuân thủ nghiêm ngặt các quy tắc nghiệp vụ theo PRD:
 Yêu cầu nghiệm thu quan trọng nhất (**AT-05**): *Khi có 5 yêu cầu đồng thời gửi đến cùng 1 thiết bị và cùng 1 khung giờ, hệ thống chỉ cho phép đúng 1 yêu cầu thành công, 4 yêu cầu còn lại bị từ chối với mã `409 Conflict`*.
 
 ### Giải pháp kỹ thuật trong Spring Boot:
-Sử dụng **Database Transaction** kết hợp **Pessimistic Write Lock (`SELECT ... FOR UPDATE`)**:
+Sử dụng **Database Transaction** kết hợp **Pessimistic Write Lock (`SELECT ... FOR UPDATE`) trên bản ghi Thiết bị**:
+
+> **Lưu ý kỹ thuật quan trọng**: Không thể chỉ khóa các bản ghi `Booking` đang trùng, vì khi khung giờ còn trống hoàn toàn, câu lệnh tìm kiếm sẽ trả về 0 bản ghi (không có dòng nào bị khóa), dẫn đến cả 5 request đều tưởng còn trống và cùng chèn dữ liệu!
+> 
+> **Cách xử lý đúng**: Khóa dòng của chính thiết bị đó trước khi kiểm tra:
+
 ```java
-// Trong BookingRepository.java
+// 1. Trong EquipmentRepository.java: Khóa dòng thiết bị khi bắt đầu giao dịch
 @Lock(LockModeType.PESSIMISTIC_WRITE)
-@Query("SELECT b FROM Booking b WHERE b.equipment.id = :equipmentId " +
-       "AND b.status = 'CONFIRMED' " +
-       "AND b.startTime < :endTime AND b.endTime > :startTime")
-List<Booking> findConflictingBookingsForUpdate(
-    @Param("equipmentId") Long equipmentId,
-    @Param("startTime") LocalDateTime startTime,
-    @Param("endTime") LocalDateTime endTime
-);
+@Query("SELECT e FROM Equipment e WHERE e.id = :id")
+Optional<Equipment> findByIdForUpdate(@Param("id") Long id);
+
+// 2. Trong BookingService.java:
+@Transactional
+public BookingResponse createBooking(BookingCreationRequest request) {
+    // Luồng nào đến trước sẽ khóa thiết bị này, 4 luồng sau phải xếp hàng chờ
+    Equipment equipment = equipmentRepository.findByIdForUpdate(request.getEquipmentId())
+        .orElseThrow(() -> new AppException(ErrorCode.EQUIPMENT_NOT_FOUND));
+
+    // Sau khi có khóa an toàn, mới kiểm tra trùng lịch
+    boolean isConflicted = bookingRepository.existsOverlappingBooking(...);
+    if (isConflicted) {
+        throw new AppException(ErrorCode.BOOKING_TIME_CONFLICT); // Trả về mã 409
+    }
+
+    // Tạo và lưu lượt đặt mới...
+}
 ```
-Khi luồng đầu tiên thực hiện kiểm tra, bản ghi thiết bị hoặc các khoảng thời gian liên quan sẽ bị khóa cho đến khi Transaction kết thúc (`COMMIT`), ngăn chặn hoàn toàn hiện tượng *Double Booking*.
+*Ngoài ra, hệ thống kích hoạt thêm ràng buộc **Exclusion Constraint** trong PostgreSQL (`tstzrange` với `&&`) làm chốt chặn tầng thứ hai ở cấp độ CSDL để đảm bảo tính toàn vẹn tuyệt đối.*
 
 ---
 
@@ -158,10 +173,10 @@ Khi luồng đầu tiên thực hiện kiểm tra, bản ghi thiết bị hoặc
 ### 6.3. Khởi chạy Backend (Spring Boot)
 ```bash
 cd backend
-# Nếu dùng Maven Wrapper:
-./mvnw clean spring-boot:run
-# Hoặc trên Windows:
+# Chạy với Maven Wrapper trên Windows:
 mvnw.cmd clean spring-boot:run
+# Hoặc trên Linux/macOS:
+./mvnw clean spring-boot:run
 ```
 API sẽ lắng nghe tại: `http://localhost:8080/api/v1`  
 Tài liệu Swagger UI: `http://localhost:8080/api/v1/swagger-ui/index.html`
